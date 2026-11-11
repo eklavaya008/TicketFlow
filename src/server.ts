@@ -1,6 +1,6 @@
 // main root file
 
-import { env } from "node:process";
+import { env } from './config/env';
 import { createAPP } from "./app";
 import { logger } from "./lib/logger";
 
