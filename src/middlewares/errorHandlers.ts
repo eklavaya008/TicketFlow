@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { NextFunction } from "express";
 import { logger } from "../lib/logger";
+import { AppError } from "../errors/AppError";
 
 
 export function errorHandler(
@@ -10,6 +11,14 @@ export function errorHandler(
     _next: NextFunction,
 
 ): void {
+
+    if(err instanceof AppError) {
+        res.status(err.statusCode).json({
+            success: false,
+            message: err.message,
+        });
+        return;
+    };
 
     logger.error({err}, "Unhandled Error");
     res.status(500).json({
