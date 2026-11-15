@@ -1,5 +1,6 @@
+import { title } from "node:process";
 import { AppError } from "../errors/AppError";
-import { createTask, fetchTaskByIdAnduserId, fetchTaskByUserId, updateTaskTitle} from "../repositories/user.task.repository";
+import { createTask, deleteTask, fetchTaskByIdAnduserId, fetchTaskByUserId, updateTaskTitle} from "../repositories/user.task.repository";
 import { Task } from "../types/task";
 
 
@@ -56,4 +57,15 @@ export async function updateUserTask(
     };
 
     return task;
+};
+
+export async function deleteUserTask(
+    taskId: string,
+    userId: string
+): Promise<void> {
+    const deleted = await deleteTask(taskId, userId);
+
+    if(!deleted){
+        throw new AppError(404, "Task not found");
+    };
 };
