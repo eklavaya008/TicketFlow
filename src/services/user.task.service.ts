@@ -1,5 +1,5 @@
 import { AppError } from "../errors/AppError";
-import { createTask } from "../repositories/user.task.repository";
+import { createTask, fetchTaskByIdAnduserId, fetchTaskByUserId} from "../repositories/user.task.repository";
 import { Task } from "../types/task";
 
 
@@ -9,13 +9,13 @@ function validateTitle(title: unknown): string {
         throw new AppError(400, "Title is required");
     };
 
-    const trimmedTtile = title.trim()
+    const trimmedTitle = title.trim()
 
-    if(trimmedTtile.length > 100){
+    if(trimmedTitle.length > 100){
         throw new AppError(400, "Title should not be more than 100 char");
     };
 
-    return trimmedTtile;
+    return trimmedTitle;
 }
 
 export async function createUserTask(
@@ -26,4 +26,18 @@ export async function createUserTask(
     const validTitle = validateTitle(title);
     return createTask(user_id,validTitle);
     
+};
+
+export async function getUserTasks(userId: string): Promise<Task[]> {
+    return fetchTaskByUserId(userId)
+};
+
+export async function getUserTaskById(taskId: string, userId: string): Promise<Task> {
+    const task =  await fetchTaskByIdAnduserId(taskId, userId);
+
+    if(!task){
+        throw new AppError(404,"Task not found");
+    };
+
+    return task;
 };
