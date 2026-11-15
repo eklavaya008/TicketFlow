@@ -18,6 +18,8 @@ export const env = {
     nodeEnv: (process.env.NODE_ENV ?? "development"),
     loglevel: (process.env.LOG_LEVEL ?? "info"),
     databaseUrl: checkRequiredVariables('DATABASE_URL'),
+    jwtAccessSecret: checkRequiredVariables("JWT_SECRET"),
+    jwtAccessExpiresIn: checkRequiredVariables("JWT_ACCESS_EXPIRES_IN")
 
 } as const;
 
